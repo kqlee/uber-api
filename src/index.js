@@ -1,10 +1,18 @@
 const request = require('request');
+const oauth2lib = require('oauth20-provider');
 const dotenv = require('dotenv');
+
+// Initializations
 dotenv.config();
+const oauth2 = new oauth2lib({ log: { level: 2 } });
 
 // Uber API Constants
 const uberClientId = process.env.UBER_CLIENT_ID;
+const uberClientSecret = process.env.UBER_CLIENT_SECRET;
 const uberServerToken = process.env.UBER_SERVER_TOKEN;
+
+// Application name
+const App = 'FILL_IN_APPLICATION_NAME';
 
 const Uber = {
 
@@ -25,9 +33,7 @@ const Uber = {
       if (err) {
         callback(err);
       }
-      if (callback) {
-        callback(null, body);
-      }
+      callback(null, body);
     });
   },
 
@@ -48,11 +54,9 @@ const Uber = {
       if (err) {
         callback(err);
       }
-      if (callback) {
-        callback(null, body);
-      }
+      callback(null, body);
     });
-  }
+  },
 
 };
 
