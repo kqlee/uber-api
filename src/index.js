@@ -1,4 +1,4 @@
-const fetch = require('isomorphic-fetch');
+const request = require('request');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -8,31 +8,29 @@ const uberServerToken = process.env.UBER_SERVER_TOKEN;
 
 const Uber = {
 
-  GetPriceEstimate: (queryParams) => {
-    return fetch({
-      url: "https://api.uber.com/v1/estimates/price",
-      method: 'GET',
+  GetPriceEstimate: (queryParams, callback) => {
+    request({
+      url: 'https://api.uber.com/v1/estimates/price',
       headers: {
-        Authorization: "Token " + uberServerToken,
+        Authorization: 'Token ' + uberServerToken,
       },
-      data: {
+      qs: {
         start_latitude: queryParams.start_latitude,
         start_longitude: queryParams.start_longitude,
         end_latitude: queryParams.end_latitude,
-        end_longitude: queryParams.end_longitude
+        end_longitude: queryParams.end_longitude 
       },
-      success: (result) => {
-        console.log(result);
-      },
-      error: (err) => {
-        console.error(err);
+      method: 'GET',
+    }, (err, res, body) => {
+      if (err) {
+        callback(err);
+      }
+      if (callback) {
+        callback(null, body);
       }
     });
-  },
-
+  }
 
 };
-
-
 
 module.exports = Uber;
